@@ -26,13 +26,17 @@ const App = () => {
       votes[selected] + 1,
       ...votes.slice(selected + 1),
     ]);
+    hanldeNext();
   };
   return (
     <div>
+      <h2>Anecdote of the day</h2>
       {anecdotes[selected]}
       <div>
         <button onClick={handleVote}>vote</button>
         <button onClick={hanldeNext}>next anecdote</button>
+        <h2>Anecdote with most votes</h2>
+        {anecdotes[votes.indexOf(Math.max(...votes))]}
       </div>
     </div>
   );
