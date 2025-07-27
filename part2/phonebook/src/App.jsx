@@ -9,11 +9,13 @@ const App = () => {
   };
   const addPerson = (event) => {
     event.preventDefault();
+    if (persons.find((person) => person.name === newName.trim())) {
+      alert(`${newName} is already added to phonebook`);
+    } else {
+      setPersons([...persons, { name: newName }]);
 
-    setPersons([...persons, { name: newName }]);
-    console.log("hui");
-
-    setNewName("");
+      setNewName("");
+    }
   };
   return (
     <div>
