@@ -14,9 +14,9 @@ const Persons = ({ persons }) => {
 const PersonForm = ({
   addPerson,
   handleNameInput,
-  handlePhoneInput,
+  handleNumberInput,
   newName,
-  newPhone,
+  newNumber,
 }) => {
   return (
     <form onSubmit={addPerson}>
@@ -24,7 +24,7 @@ const PersonForm = ({
         name: <input onChange={handleNameInput} value={newName} />
       </div>
       <div>
-        number: <input onChange={handlePhoneInput} value={newPhone} />
+        number: <input onChange={handleNumberInput} value={newNumber} />
       </div>
       <div>
         <button type="submit">add</button>
@@ -40,7 +40,7 @@ const Filter = ({ handleFilterInput, filter }) => (
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
-  const [newPhone, setNewPhone] = useState("");
+  const [newNumber, setNewNumber] = useState("");
   const [filter, setFilter] = useState("");
 
   useEffect(() => {
@@ -53,30 +53,36 @@ const App = () => {
         console.log(error);
       });
   }, []);
+
   const filteredPersons = persons.filter((person) =>
     person.name.toLowerCase().includes(filter.toLowerCase())
   );
   const handleNameInput = (e) => {
     setNewName(e.target.value);
   };
-  const handlePhoneInput = (e) => {
-    setNewPhone(e.target.value);
+  const handleNumberInput = (e) => {
+    setNewNumber(e.target.value);
   };
   const handleFilterInput = (e) => {
     setFilter(e.target.value);
   };
+
   const addPerson = (event) => {
     event.preventDefault();
     if (persons.find((person) => person.name === newName.trim())) {
-      alert(`${newName} is already added to phonebook`);
+      alert(`${newName} is already added to Numberbook`);
     } else {
-      setPersons([
-        ...persons,
-        { name: newName, number: newPhone, id: Math.random() },
-      ]);
+      axios
+        .post("http://localhost:3001/persons", {
+          name: newName,
+          number: newNumber,
+        })
+        .then((response) => {
+          setPersons([...persons, response.data]);
+        });
 
       setNewName("");
-      setNewPhone("");
+      setNewNumber("");
     }
   };
   return (
@@ -87,9 +93,9 @@ const App = () => {
       <PersonForm
         addPerson={addPerson}
         handleNameInput={handleNameInput}
-        handlePhoneInput={handlePhoneInput}
+        handleNumberInput={handleNumberInput}
         newName={newName}
-        newPhone={newPhone}
+        newNumber={newNumber}
       />
       <h2>Numbers</h2>
       <Persons persons={filteredPersons} />
