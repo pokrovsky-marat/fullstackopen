@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const baseUrl = "https://studies.cs.helsinki.fi/restcountries/api/";
-const ShowCountries = ({ filtered }) => {
+const ShowCountries = ({ filtered, setSearchText }) => {
   if (filtered.length === 0) return;
   if (filtered.length > 10) {
     return <div>Too many matches, specify another filter</div>;
@@ -11,7 +11,16 @@ const ShowCountries = ({ filtered }) => {
     return (
       <div>
         {filtered.map((country) => (
-          <div key={country.name.common}>{country.name.common}</div>
+          <div key={country.name.common}>
+            {country.name.common}
+            <button
+              onClick={() => {
+                setSearchText(country.name.common);
+              }}
+            >
+              show
+            </button>
+          </div>
         ))}
       </div>
     );
@@ -35,15 +44,11 @@ const ShowCountries = ({ filtered }) => {
 const App = () => {
   const [searchText, setSearchText] = useState("");
   const [countries, setCountries] = useState([]);
-  const [filtered, setFiltered] = useState([]);
-  const handleInput = (e) => {
-    let filteredCountries = [];
-    filteredCountries = countries.filter((country) =>
-      country.name.common.toLowerCase().includes(e.target.value.toLowerCase())
-    );
-    console.log(filteredCountries);
+  const filteredCountries = countries.filter((country) =>
+    country.name.common.toLowerCase().includes(searchText.toLowerCase())
+  );
 
-    setFiltered(filteredCountries);
+  const handleInput = (e) => {
     setSearchText(e.target.value);
   };
   useEffect(() => {
@@ -53,9 +58,12 @@ const App = () => {
   }, []);
   return (
     <div>
-      find countries{" "}
+      find countries
       <input onChange={handleInput} type="text" value={searchText} />
-      <ShowCountries filtered={filtered} />
+      <ShowCountries
+        filtered={filteredCountries}
+        setSearchText={setSearchText}
+      />
     </div>
   );
 };
