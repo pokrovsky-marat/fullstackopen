@@ -1,8 +1,40 @@
+// In order to safely run app use command bellow wit your key from https://openweathermap.org/
+// export VITE_SOME_KEY=your_key && npm run dev // For Linux/macOS/windows Bash
+
+const api_key = import.meta.env.VITE_SOME_KEY;
 import { useEffect, useState } from "react";
 import axios from "axios";
-
 const baseUrl = "https://studies.cs.helsinki.fi/restcountries/api/";
-const ShowCountries = ({ filtered, setSearchText }) => {
+const SingleCountry = ({ country, weather, setWeather }) => {
+  const [lat, lng] = country.capitalInfo.latlng;
+  let url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=${api_key}&units=metric`;
+  useEffect(() => {
+    axios.get(url).then((response) => {
+      setWeather(response.data);
+    });
+  }, [url]);
+
+  return (
+    <div>
+      <h1>{country.name.common}</h1>
+      <div>Capital {country.capital}</div>
+      <div>Area {country.area}</div>
+      <h2>Languages</h2>
+      {Object.values(country.languages).map((language) => (
+        <li key={language}>{language}</li>
+      ))}
+      <img src={country.flags.png} alt={country.flags.alt} />
+      <h2>Wheather in {country.capital}</h2>
+      <div>Temperature {weather?.main?.temp} Celsius</div>
+      <img
+        src={`https://openweathermap.org/img/wn/${weather?.weather?.[0]?.icon}@2x.png`}
+        alt=""
+      />
+      <div>Wind {weather?.wind?.speed} m/s</div>
+    </div>
+  );
+};
+const ShowCountries = ({ filtered, setSearchText, weather, setWeather }) => {
   if (filtered.length === 0) return;
   if (filtered.length > 10) {
     return <div>Too many matches, specify another filter</div>;
@@ -28,26 +60,21 @@ const ShowCountries = ({ filtered, setSearchText }) => {
   if (filtered.length === 1) {
     let country = filtered[0];
     return (
-      <div>
-        <h1>{country.name.common}</h1>
-        <div>Capital {country.capital}</div>
-        <div>Area {country.area}</div>
-        <h2>Languages</h2>
-        {Object.values(country.languages).map((language) => (
-          <li key={language}>{language}</li>
-        ))}
-        <img src={country.flags.png} alt={country.flags.alt} />
-      </div>
+      <SingleCountry
+        country={country}
+        weather={weather}
+        setWeather={setWeather}
+      />
     );
   }
 };
 const App = () => {
   const [searchText, setSearchText] = useState("");
   const [countries, setCountries] = useState([]);
+  const [weather, setWeather] = useState({});
   const filteredCountries = countries.filter((country) =>
     country.name.common.toLowerCase().includes(searchText.toLowerCase())
   );
-
   const handleInput = (e) => {
     setSearchText(e.target.value);
   };
@@ -63,6 +90,8 @@ const App = () => {
       <ShowCountries
         filtered={filteredCountries}
         setSearchText={setSearchText}
+        weather={weather}
+        setWeather={setWeather}
       />
     </div>
   );
