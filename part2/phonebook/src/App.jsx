@@ -1,3 +1,4 @@
+import "./index.css";
 import { useState, useEffect } from "react";
 import dbService from "./services/dbPersons";
 const Persons = ({ persons, handleDelete }) => {
@@ -44,11 +45,16 @@ const Filter = ({ handleFilterInput, filter }) => (
     filter shown with: <input onChange={handleFilterInput} value={filter} />
   </div>
 );
+const Notification = ({ message }) => {
+  if (message === null) return;
+  return <div className="notification">{message}</div>;
+};
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filter, setFilter] = useState("");
+  const [notificationText, setNotificationText] = useState(null);
 
   useEffect(() => {
     dbService
@@ -114,6 +120,10 @@ const App = () => {
           .updatePerson({ id, name: newName, number: newNumber })
           .then((updatePerson) => {
             const updatedPersons = persons.filter((person) => person.id !== id);
+            setNotificationText(`Updated ${newName}`);
+            setTimeout(() => {
+              setNotificationText(null);
+            }, 5000);
             setPersons([...updatedPersons, updatePerson]);
             setNewName("");
             setNewNumber("");
@@ -123,6 +133,10 @@ const App = () => {
       dbService
         .createPerson({ name: newName, number: newNumber })
         .then((createdPerson) => {
+          setNotificationText(`Added ${newName}`);
+          setTimeout(() => {
+            setNotificationText(null);
+          }, 5000);
           setPersons([...persons, createdPerson]);
         });
       setNewName("");
@@ -132,6 +146,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notificationText} />
       <Filter handleFilterInput={handleFilterInput} filter={filter} />
       <h2>Add a new</h2>
       <PersonForm
