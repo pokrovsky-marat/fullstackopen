@@ -1,11 +1,18 @@
 import { useState, useEffect } from "react";
 import dbService from "./services/dbPersons";
-const Persons = ({ persons }) => {
+const Persons = ({ persons, handleDelete }) => {
   return (
     <>
       {persons.map(({ name, number, id }) => (
         <div key={id}>
           {name} {number}
+          <button
+            onClick={() => {
+              handleDelete(id, name);
+            }}
+          >
+            delete
+          </button>
         </div>
       ))}
     </>
@@ -66,6 +73,22 @@ const App = () => {
   const handleFilterInput = (e) => {
     setFilter(e.target.value);
   };
+  const handleDelete = (id, name) => {
+    if (window.confirm(`Delete ${name} ?`)) {
+      dbService
+        .deletePerson(id)
+        .then((deletedPerson) => {
+          const changedState = persons.filter(
+            (person) => person.id !== deletedPerson.id
+          );
+          setPersons(changedState);
+        })
+        .catch((error) => {
+          console.log("Something went wrong");
+          console.log(error);
+        });
+    }
+  };
 
   const addPerson = (event) => {
     event.preventDefault();
@@ -94,7 +117,7 @@ const App = () => {
         newNumber={newNumber}
       />
       <h2>Numbers</h2>
-      <Persons persons={filteredPersons} />
+      <Persons persons={filteredPersons} handleDelete={handleDelete} />
     </div>
   );
 };
