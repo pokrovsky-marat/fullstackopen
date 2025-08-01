@@ -91,9 +91,34 @@ const App = () => {
   };
 
   const addPerson = (event) => {
+    let id = null;
     event.preventDefault();
-    if (persons.find((person) => person.name === newName.trim())) {
-      alert(`${newName} is already added to Numberbook`);
+    if (
+      persons.find((person) => {
+        if (
+          person.name.trim().toLowerCase() ===
+          newName.trim().toLocaleLowerCase()
+        ) {
+          id = person.id;
+          return true;
+        }
+        return false;
+      })
+    ) {
+      if (
+        window.confirm(
+          `${newName} is already added to the phonebook, replace the old number with a new one?`
+        )
+      ) {
+        dbService
+          .updatePerson({ id, name: newName, number: newNumber })
+          .then((updatePerson) => {
+            const updatedPersons = persons.filter((person) => person.id !== id);
+            setPersons([...updatedPersons, updatePerson]);
+            setNewName("");
+            setNewNumber("");
+          });
+      }
     } else {
       dbService
         .createPerson({ name: newName, number: newNumber })
