@@ -26,6 +26,16 @@ const persons = [
 app.get("/api/persons", (req, res) => {
   res.json(persons);
 });
+app.get("/api/persons/:id", (req, res) => {
+  let id = req.params.id;
+  let person = persons.find((person) => person.id == id);
+  if (!person) {
+    res.status(404);
+    res.end();
+  } else {
+    res.json(person);
+  }
+});
 app.get("/info", (req, res) => {
   res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
   res.write(`Phonebook has info for ${persons.length} people`);
