@@ -5,3 +5,12 @@ GET http://localhost:3001/api/persons/5
 GET http://localhost:3001/api/persons/
 ###
 DELETE http://localhost:3001/api/persons/33
+###
+POST http://localhost:3001/api/persons/
+Content-Type: application/json
+
+{
+  "name": "Пример имени",
+  "number": "545454545454"
+}
+

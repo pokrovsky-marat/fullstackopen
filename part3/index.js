@@ -21,11 +21,18 @@ let persons = [
     name: "Mary Poppendieck",
     number: "39-23-6423122",
   },
-]; 
-
+];
+app.use(express.json());
 app.get("/api/persons", (req, res) => {
   res.json(persons);
 });
+app.post("/api/persons", (req, res) => {
+  let body = req.body;
+  let person = { ...body, id: Math.random() };
+  persons.push(person);
+  res.json(person)
+});
+
 app.delete("/api/persons/:id", (req, res) => {
   const id = req.params.id;
   persons = persons.filter((person) => person.id !== id);
