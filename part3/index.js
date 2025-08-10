@@ -28,9 +28,21 @@ app.get("/api/persons", (req, res) => {
 });
 app.post("/api/persons", (req, res) => {
   let body = req.body;
-  let person = { ...body, id: Math.random() };
-  persons.push(person);
-  res.json(person)
+  if (!body?.name || !body?.number) {
+    res.status(400);
+    res.json({ error: "Required two fields number and name" });
+  }
+
+  if (body?.number && body?.name) {
+    if (persons.find((person) => person.name == body?.name)) {
+      res.status(400);
+      res.json({ error: "name must be unique" });
+    } else {
+      let person = { ...body, id: Math.random() };
+      persons.push(person);
+      res.json(person);
+    }
+  }
 });
 
 app.delete("/api/persons/:id", (req, res) => {
