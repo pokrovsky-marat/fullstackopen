@@ -88,9 +88,9 @@ const App = () => {
     if (window.confirm(`Delete ${name} ?`)) {
       dbService
         .deletePerson(id)
-        .then((deletedPerson) => {
+        .then((deletedId) => {
           const changedState = persons.filter(
-            (person) => person.id !== deletedPerson.id
+            (person) => person.id !== deletedId
           );
           setPersons(changedState);
         })
