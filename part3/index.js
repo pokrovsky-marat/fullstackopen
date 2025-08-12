@@ -48,7 +48,7 @@ app.post("/api/persons", (req, res) => {
       res.status(400);
       res.json({ error: "name must be unique" });
     } else {
-      let person = { ...body, id: Math.random() };
+      let person = { ...body, id: String(Math.random()) };
       persons.push(person);
       res.json(person);
     }
@@ -78,7 +78,8 @@ app.get("/info", (req, res) => {
   res.write(String(date));
   res.end();
 });
-const PORT = 3001;
+// Это настройка для деплоя на render.com
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server is runnin on ${PORT}`);
 });
