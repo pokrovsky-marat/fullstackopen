@@ -1,9 +1,6 @@
 import axios from "axios";
 
-// dev version
-// const baseUrl = "http://localhost:3001/api/persons";
-// deployed version
-const baseUrl = "https://fso-nodejs-server-homework.onrender.com/api/persons";
+const baseUrl = "/api/persons";
 const getAll = () => axios.get(baseUrl).then((response) => response.data);
 const deletePerson = (id) => axios.delete(`${baseUrl}/${id}`).then(() => id);
 const updatePerson = ({ name, number, id }) =>

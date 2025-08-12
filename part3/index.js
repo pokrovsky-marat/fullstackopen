@@ -1,6 +1,5 @@
 const express = require("express");
 const morgan = require("morgan");
-const cors = require("cors");
 const app = express();
 let persons = [
   {
@@ -24,9 +23,8 @@ let persons = [
     number: "39-23-6423122",
   },
 ];
-
+app.use(express.static("dist"));
 app.use(express.json());
-app.use(cors());
 // Создаём токен для body
 morgan.token("body", (req) => JSON.stringify(req.body));
 
