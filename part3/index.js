@@ -65,13 +65,13 @@ app.post("/api/persons", (req, res) => {
   }
 });
 
-app.delete("/api/persons/:id", (req, res) => {
+app.delete("/api/persons/:id", (req, res, next) => {
   Person.findByIdAndDelete(req.params.id)
     .then((result) => {
       res.status(204).end();
     })
     .catch((error) => {
-      console.log(error);
+      next(error);
     });
 });
 app.get("/api/persons/:id", (req, res) => {
@@ -92,6 +92,15 @@ app.get("/info", (req, res) => {
   res.write(String(date));
   res.end();
 });
+const errorHandler = (error, req, res, next) => {
+  console.error(error);
+  if (error.name === "CastError") {
+    return res.status(400).send({ error: "malformatted id" });
+  }
+
+  next(error);
+};
+app.use(errorHandler);
 // Это настройка для деплоя на render.com
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
