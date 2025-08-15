@@ -74,23 +74,28 @@ app.delete("/api/persons/:id", (req, res, next) => {
       next(error);
     });
 });
-app.get("/api/persons/:id", (req, res) => {
-  let id = req.params.id;
-  let person = persons.find((person) => person.id == id);
-  if (!person) {
-    res.status(404);
-    res.end();
-  } else {
-    res.json(person);
-  }
+app.get("/api/persons/:id", (req, res, next) => {
+  Person.findById(req.params.id)
+    .then((person) => {
+      if (person) {
+        res.json(person);
+      } else {
+        res.status(404).end();
+      }
+    })
+    .catch((error) => {
+      next(error);
+    });
 });
 app.get("/info", (req, res) => {
-  res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
-  res.write(`Phonebook has info for ${persons.length} people`);
-  res.write("<br/>");
-  let date = new Date();
-  res.write(String(date));
-  res.end();
+  Person.find({}).then((persons) => {
+    res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+    res.write(`Phonebook has info for ${persons.length} people`);
+    res.write("<br/>");
+    let date = new Date();
+    res.write(String(date));
+    res.end();
+  });
 });
 app.put("/api/persons/:id", (req, res, next) => {
   const { name, number } = req.body;
@@ -102,7 +107,6 @@ app.put("/api/persons/:id", (req, res, next) => {
       }
       person.name = name;
       person.number = number;
-
 
       return person.save().then((updatedPerson) => {
         res.json(updatedPerson);
