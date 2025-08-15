@@ -92,6 +92,24 @@ app.get("/info", (req, res) => {
   res.write(String(date));
   res.end();
 });
+app.put("/api/persons/:id", (req, res, next) => {
+  const { name, number } = req.body;
+
+  Person.findById(req.params.id)
+    .then((person) => {
+      if (!person) {
+        return res.status(404).end();
+      }
+      person.name = name;
+      person.number = number;
+
+
+      return person.save().then((updatedPerson) => {
+        res.json(updatedPerson);
+      });
+    })
+    .catch((error) => next(error));
+});
 const errorHandler = (error, req, res, next) => {
   console.error(error);
   if (error.name === "CastError") {
