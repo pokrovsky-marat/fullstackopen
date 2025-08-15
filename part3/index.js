@@ -46,14 +46,22 @@ app.post("/api/persons", (req, res) => {
   }
 
   if (body?.number && body?.name) {
-    if (persons.find((person) => person.name == body?.name)) {
-      res.status(400);
-      res.json({ error: "name must be unique" });
-    } else {
-      let person = { ...body, id: String(Math.random()) };
-      persons.push(person);
-      res.json(person);
-    }
+    // if (persons.find((person) => person.name == body?.name)) {
+    //   res.status(400);
+    //   res.json({ error: "name must be unique" });
+    // } else {
+    //   let person = { ...body, id: String(Math.random()) };
+    //   persons.push(person);
+    //   res.json(person);
+    // }
+    const person = new Person({
+      name: body.name,
+      number: body.number,
+    });
+
+    person.save().then((savedPerson) => {
+      res.json(savedPerson);
+    });
   }
 });
 
