@@ -151,6 +151,13 @@ const App = () => {
             setNotificationText(null);
           }, 5000);
           setPersons([...persons, createdPerson]);
+        })
+        .catch((error) => {
+          console.log(error.response.data.error);
+          setErrorText(error.response.data.error);
+          setTimeout(() => {
+            setErrorText(null);
+          }, 4000);
         });
       setNewName("");
       setNewNumber("");
