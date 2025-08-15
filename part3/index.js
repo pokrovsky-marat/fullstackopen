@@ -1,3 +1,5 @@
+require("dotenv").config();
+const Person = require("./models/person");
 const express = require("express");
 const morgan = require("morgan");
 const app = express();
@@ -32,7 +34,9 @@ app.use(
   morgan(":method :url :status :res[content-length] - :response-time ms :body")
 );
 app.get("/api/persons", (req, res) => {
-  res.json(persons);
+  Person.find({}).then((persons) => {
+    res.json(persons);
+  });
 });
 app.post("/api/persons", (req, res) => {
   let body = req.body;
@@ -77,7 +81,7 @@ app.get("/info", (req, res) => {
   res.end();
 });
 // Это настройка для деплоя на render.com
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server is runnin on ${PORT}`);
 });
