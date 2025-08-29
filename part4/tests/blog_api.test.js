@@ -20,8 +20,11 @@ test('blogs are returned as json', async () => {
 
 test('all blogs are returned', async () => {
   const response = await api.get('/api/blogs')
-
   assert.strictEqual(response.body.length, helper.blogs.length)
+})
+test('verify that  the unique identifier property of the blog posts is named id', async () => {
+  const response = await api.get('/api/blogs')
+  assert.notStrictEqual(response.body?.[0].id, undefined)
 })
 // test('a valid note can be added ', async () => {
 //   const newNote = {
