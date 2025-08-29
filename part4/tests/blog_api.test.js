@@ -26,25 +26,33 @@ test('verify that  the unique identifier property of the blog posts is named id'
   const response = await api.get('/api/blogs')
   assert.notStrictEqual(response.body?.[0].id, undefined)
 })
-// test('a valid note can be added ', async () => {
-//   const newNote = {
-//     content: 'async/await simplifies making async calls',
-//     important: true,
-//   }
+test('a valid blog note can be added ', async () => {
+  const newBlog = {
+    title: 'My app testing',
+    author: 'Marat Isaev',
+    url: 'https://marat.isaev.kg',
+    likes: 5,
+  }
 
-//   await api
-//     .post('/api/notes')
-//     .send(newNote)
-//     .expect(201)
-//     .expect('Content-Type', /application\/json/)
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
 
-//   const notesAtEnd = await helper.notesInDb()
-//   assert.strictEqual(notesAtEnd.length, helper.initialNotes.length + 1)
+  const response = await api.get('/api/blogs')
+  assert.strictEqual(response.body.length, helper.blogs.length + 1)
 
-//   const contents = notesAtEnd.map((n) => n.content)
+  const title = response.body.map((n) => n.title)
+  const author = response.body.map((n) => n.author)
+  const url = response.body.map((n) => n.url)
+  const likes = response.body.map((n) => n.likes)
 
-//   assert(contents.includes('async/await simplifies making async calls'))
-// })
+  assert(title.includes('My app testing'))
+  assert(author.includes('Marat Isaev'))
+  assert(url.includes('https://marat.isaev.kg'))
+  assert(likes.includes(5))
+})
 // test('note without content is not added', async () => {
 //   const newNote = {
 //     important: true,

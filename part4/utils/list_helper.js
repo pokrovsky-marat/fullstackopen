@@ -11,18 +11,6 @@ const favoriteBlog = (blogs) => {
   })
   return result
 }
-//Нужно получить автора который встречается чаще всего
-//Данные представленны в виде массива объектов вида 👇
-// [
-//   {
-//     _id: '5a422bc61b54a676234d17fc',
-//     title: 'Type wars',
-//     author: 'Robert C. Martin',
-//     url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
-//     likes: 2,
-//     __v: 0,
-//   },
-// ]
 const mostBlogs = (blogs) => {
   if (blogs.length === 0) return null
   let authors = {}
@@ -43,7 +31,7 @@ const mostLikes = (blogs) => {
   let authors = {}
   blogs.forEach((blog) => {
     if (!authors[blog.author]) authors[blog.author] = blog.likes
-    else authors[blog.author]+=blog.likes
+    else authors[blog.author] += blog.likes
   })
   let result = Object.entries(authors).reduce((max, item) =>
     item[1] > max[1] ? item : max
