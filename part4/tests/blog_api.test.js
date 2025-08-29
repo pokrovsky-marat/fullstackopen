@@ -90,15 +90,30 @@ test('blog without title or url is not added', async () => {
 describe('deletion of a blog note', () => {
   test('succeeds with status code 204 if id is valid', async () => {
     let response = await api.get('/api/blogs')
-    const blogToDelete = response.body[0]
-    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204)
+    const blogToUpdate = response.body[0]
+    await api.delete(`/api/blogs/${blogToUpdate.id}`).expect(204)
     response = await api.get('/api/blogs')
     const blogsAtEnd = response.body
     const title = blogsAtEnd.map((n) => n.title)
-    assert(!title.includes(blogToDelete.title))
+    assert(!title.includes(blogToUpdate.title))
 
     assert.strictEqual(blogsAtEnd.length, helper.blogs.length - 1)
   })
+})
+test('succeeds with status code 200 if blog note was updated', async () => {
+  const updatedBlog = {
+    title: 'React patterns',
+    author: 'Michael Chan',
+    url: 'https://reactpatterns.com/',
+    likes: 777,
+  }
+  let response = await api.get('/api/blogs')
+  const blogToUpdate = response.body?.[0]
+  await api.put(`/api/blogs/${blogToUpdate.id}`).send(updatedBlog).expect(200)
+  response = await api.get('/api/blogs')
+  const blogsAtEnd = response.body
+
+  assert.equal(blogsAtEnd?.[0].likes, updatedBlog.likes)
 })
 
 after(async () => {
