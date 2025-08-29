@@ -5,6 +5,7 @@ const supertest = require('supertest')
 const app = require('../app')
 const helper = require('./test_helper')
 const Blog = require('../models/blog')
+const { response } = require('express')
 const api = supertest(app)
 
 beforeEach(async () => {
@@ -52,6 +53,24 @@ test('a valid blog note can be added ', async () => {
   assert(author.includes('Marat Isaev'))
   assert(url.includes('https://marat.isaev.kg'))
   assert(likes.includes(5))
+})
+test('if likes property is missing, default value is 0', async () => {
+  const newBlog = {
+    title: 'My app testing',
+    author: 'Marat Isaev',
+    url: 'https://marat.isaev.kg',
+  }
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+  const response = await api.get('/api/blogs')
+
+ 
+  const likes = response.body?.[response.body.length - 1].likes
+console.log(likes);
+  assert.strictEqual(likes, 0)
 })
 // test('note without content is not added', async () => {
 //   const newNote = {
