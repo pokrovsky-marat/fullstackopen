@@ -67,22 +67,26 @@ test('if likes property is missing, default value is 0', async () => {
     .expect('Content-Type', /application\/json/)
   const response = await api.get('/api/blogs')
 
- 
   const likes = response.body?.[response.body.length - 1].likes
-console.log(likes);
+  console.log(likes)
   assert.strictEqual(likes, 0)
 })
-// test('note without content is not added', async () => {
-//   const newNote = {
-//     important: true,
-//   }
+test('blog without title or url is not added', async () => {
+  let newBlog = {
+    author: 'Marat Isaev',
+    url: 'https://marat.isaev.kg',
+  }
+  await api.post('/api/blogs').send(newBlog).expect(400)
 
-//   await api.post('/api/notes').send(newNote).expect(400)
+  newBlog = {
+    author: 'Marat Isaev',
+  }
+  await api.post('/api/blogs').send(newBlog).expect(400)
 
-//   const notesAtEnd = await helper.notesInDb()
-
-//   assert.strictEqual(notesAtEnd.length, helper.initialNotes.length)
-// })
+  //Проверяем что количество записей в БД не изменилось
+  const response = await api.get('/api/blogs')
+  assert.strictEqual(response.body.length, helper.blogs.length)
+})
 
 // test('a specific note is within the returned notes', async () => {
 //   const response = await api.get('/api/notes')
