@@ -14,4 +14,21 @@ Content-Type: application/json
   "url": "my url",
   "likes": "3333"
 }
+###
+POST http://localhost:3003/api/blogs/
+Content-Type: application/json
+
+{
+"title":"React patterns",
+"author":"Michael Chan",
+"user":"68be591ce78ee5c9848dd27f",
+"url":"https://reactpatterns.com/",
+"likes":"777"
+}
+
+
+
+
+
+
 
