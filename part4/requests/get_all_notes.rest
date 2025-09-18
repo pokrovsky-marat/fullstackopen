@@ -19,20 +19,20 @@ Content-Type: application/json
 
 POST http://localhost:3003/api/blogs/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hc2xlbmHRhCIsImlkIjoiNjhjYmE3ZWVhOTEyOTNlMWE2ZjA0Yjk4IiwiaWF0IjoxNzU4MjE2NzMyLCJleHAiOjE3NTgyMjAzMzJ9.QUZbebpxIo5iURfZcanzZddYXT4T2I4KW7PKcSZB_SY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hc2xlbmHRhCIsImlkIjoiNjhjYmE3ZWVhOTEyOTNlMWE2ZjA0Yjk4IiwiaWF0IjoxNzU4MjIyODUzLCJleHAiOjE3NTgyMjY0NTN9.C-gPTVoo1lGcTWBEdZXCM6sCcGxW-s4jRDpSnrennH4
 
 {
 "title":"Добавляю еще одну запись используя мидлваре, для извлечения токена",
-"author":"Александр Пушкин",
+"author":"Александр Пушкин Сергеевич",
 "url":"https://pushkin.com/",
 "likes":"100500"
 }
 
 ### удаляю свою запись
-DELETE http://localhost:3003/api/blogs/68cc428bef3750b07887cbe7
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hc2xlbmHRhCIsImlkIjoiNjhjYmE3ZWVhOTEyOTNlMWE2ZjA0Yjk4IiwiaWF0IjoxNzU4MjE2NzMyLCJleHAiOjE3NTgyMjAzMzJ9.QUZbebpxIo5iURfZcanzZddYXT4T2I4KW7PKcSZB_SY
+DELETE http://localhost:3003/api/blogs/68cc5f712b88a2877eaf3efb
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hc2xlbmHRhCIsImlkIjoiNjhjYmE3ZWVhOTEyOTNlMWE2ZjA0Yjk4IiwiaWF0IjoxNzU4MjIyODUzLCJleHAiOjE3NTgyMjY0NTN9.C-gPTVoo1lGcTWBEdZXCM6sCcGxW-s4jRDpSnrennH4
 
 ### удаляю чужую запись
 DELETE http://localhost:3003/api/blogs/68b0b56951b11884440af432
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hc2xlbmHRhCIsImlkIjoiNjhjYmE3ZWVhOTEyOTNlMWE2ZjA0Yjk4IiwiaWF0IjoxNzU4MjE2NzMyLCJleHAiOjE3NTgyMjAzMzJ9.QUZbebpxIo5iURfZcanzZddYXT4T2I4KW7PKcSZB_SY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hc2xlbmHRhCIsImlkIjoiNjhjYmE3ZWVhOTEyOTNlMWE2ZjA0Yjk4IiwiaWF0IjoxNzU4MjIyODUzLCJleHAiOjE3NTgyMjY0NTN9.C-gPTVoo1lGcTWBEdZXCM6sCcGxW-s4jRDpSnrennH4
 

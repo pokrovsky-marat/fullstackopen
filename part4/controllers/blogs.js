@@ -2,20 +2,37 @@ const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
+const { userExtractor } = require('../utils/middlware')
+
+//Мидлвар можно добавлть к отдельному обработчику пути
+// в данном случае он добавляет к request свойство user
+blogsRouter.delete('/:id', userExtractor, async (request, response) => {
+  let blog = await Blog.findById(request.params.id)
+  if (!blog) {
+    return response.status(401).json({ error: 'No such blog note' })
+  }
+  const user = request.user
+  console.log('--------------------')
+  console.log(blog?.user?.toString(), user._id.toString())
+  if (blog?.user?.toString() !== user._id.toString()) {
+    return response
+      .status(403)
+      .json({ error: 'forbidden: not allowed to delete this resource' })
+  }
+  await Blog.findByIdAndDelete(request.params.id)
+
+  response.status(204).end()
+})
 
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
   response.json(blogs)
 })
-//request.token я получая в мидлваре, где присваиваю ему значение
+//Все обработчики снизу подпадут под влияние мидлвара, перемещая его вврех в низ
+//можно регулировать пути которым не нужна авторизация, как я сделал для get ☝
+blogsRouter.use(userExtractor)
 blogsRouter.post('/', async (request, response) => {
-  const decodedToken = jwt.verify(request.token, process.env.SECRET)
-  if (!decodedToken.id) {
-    return response.status(401).json({ error: 'token invalid' })
-  }
-
-  const user = await User.findById(decodedToken.id)
-
+  const user = request.user
   if (!user) {
     return response
       .status(400)
@@ -33,25 +50,7 @@ blogsRouter.post('/', async (request, response) => {
   user.blogs = [...user.blogs, result._id]
   await user.save()
 })
-blogsRouter.delete('/:id', async (request, response) => {
-  let blog = await Blog.findById(request.params.id)
-  if (!blog) {
-    return response.status(401).json({ error: 'No such blog note' })
-  }
-  const decodedToken = jwt.verify(request.token, process.env.SECRET)
-  if (!decodedToken.id) {
-    return response.status(401).json({ error: 'token invalid' })
-  }
 
-  if (blog?.user?.toString() !== decodedToken.id.toString()) {
-    return response
-      .status(403)
-      .json({ error: 'forbidden: not allowed to delete this resource' })
-  }
-  await Blog.findByIdAndDelete(request.params.id)
-
-  response.status(204).end()
-})
 blogsRouter.put('/:id', async (request, response) => {
   const { likes } = request.body
   let blog = await Blog.findById(request.params.id)
