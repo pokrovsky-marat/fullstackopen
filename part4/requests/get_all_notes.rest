@@ -22,7 +22,7 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hc2xlbmHRhCIsImlkIjoiNjhjYmE3ZWVhOTEyOTNlMWE2ZjA0Yjk4IiwiaWF0IjoxNzU4MjEzMDgwLCJleHAiOjE3NTgyMTY2ODB9.yaf0kLp7scJcsB3i4Hv0b62gqi0KV2QtXSqC8dsXSa8
 
 {
-"title":"О рыбаке и золотой рыбке",
+"title":"Добавляю еще одну запись используя мидлваре, для извлечения токена",
 "author":"Александр Пушкин",
 "url":"https://pushkin.com/",
 "likes":"100500"
