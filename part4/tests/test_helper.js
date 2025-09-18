@@ -42,4 +42,18 @@ const blogs = [
     __v: 0,
   },
 ]
-module.exports = { blogs }
+const users = [
+  {
+    username: 'savant',
+    name: 'Isaev Marat',
+    passwordHash:
+      '$2b$10$AKHcSSJy3d5s1Eu3yhSzcOYdH.RrnVVAWcf5eynRgkLr4pcXnp6fW',
+  },
+  {
+    username: 'maslena',
+    name: 'Maslova Alena',
+    passwordHash:
+      '$2b$10$v188ZcCqLJrxDuEQP..NyuADGP06dMgXla8GHzi5kjIm9BBk61mZW',
+  },
+]
+module.exports = { blogs, users }

@@ -9,15 +9,20 @@ Content-Type: application/json
 {
   "name": "Isaev Marat",
   "username": "savant",
-  "password": "fP8aaasxh6Z_@"
+  "password": "fP"
 }
 ###
-
 POST http://localhost:3003/api/users/
 Content-Type: application/json
 
 {
-  "name": "Maslova Alena",
-  "username": "maslena",
+  "username": "savant"
+}
+###
+POST http://localhost:3003/api/users/
+Content-Type: application/json
+
+{
+  "username": "maslenaф",
   "password": "password"
 }
