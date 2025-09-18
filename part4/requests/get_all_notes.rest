@@ -9,24 +9,24 @@ POST http://localhost:3003/api/blogs/
 Content-Type: application/json
 
 {
-  "title": "my title",
-  "author": "my author",
-  "url": "my url",
-  "likes": "3333"
-}
-###
-POST http://localhost:3003/api/blogs/
-Content-Type: application/json
-
-{
 "title":"React patterns",
 "author":"Michael Chan",
 "user":"68be591ce78ee5c9848dd27f",
 "url":"https://reactpatterns.com/",
 "likes":"777"
 }
+### Добавляем блог с помощью токен jwt, из него будет браться айди пользователя который добавил запись
 
+POST http://localhost:3003/api/blogs/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hc2xlbmHRhCIsImlkIjoiNjhjYmE3ZWVhOTEyOTNlMWE2ZjA0Yjk4IiwiaWF0IjoxNzU4MjEzMDgwLCJleHAiOjE3NTgyMTY2ODB9.yaf0kLp7scJcsB3i4Hv0b62gqi0KV2QtXSqC8dsXSa8
 
+{
+"title":"О рыбаке и золотой рыбке",
+"author":"Александр Пушкин",
+"url":"https://pushkin.com/",
+"likes":"100500"
+}
 
 
 
