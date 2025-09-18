@@ -19,7 +19,7 @@ Content-Type: application/json
 
 POST http://localhost:3003/api/blogs/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hc2xlbmHRhCIsImlkIjoiNjhjYmE3ZWVhOTEyOTNlMWE2ZjA0Yjk4IiwiaWF0IjoxNzU4MjEzMDgwLCJleHAiOjE3NTgyMTY2ODB9.yaf0kLp7scJcsB3i4Hv0b62gqi0KV2QtXSqC8dsXSa8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hc2xlbmHRhCIsImlkIjoiNjhjYmE3ZWVhOTEyOTNlMWE2ZjA0Yjk4IiwiaWF0IjoxNzU4MjE2NzMyLCJleHAiOjE3NTgyMjAzMzJ9.QUZbebpxIo5iURfZcanzZddYXT4T2I4KW7PKcSZB_SY
 
 {
 "title":"Добавляю еще одну запись используя мидлваре, для извлечения токена",
@@ -28,7 +28,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hc
 "likes":"100500"
 }
 
+### удаляю свою запись
+DELETE http://localhost:3003/api/blogs/68cc428bef3750b07887cbe7
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hc2xlbmHRhCIsImlkIjoiNjhjYmE3ZWVhOTEyOTNlMWE2ZjA0Yjk4IiwiaWF0IjoxNzU4MjE2NzMyLCJleHAiOjE3NTgyMjAzMzJ9.QUZbebpxIo5iURfZcanzZddYXT4T2I4KW7PKcSZB_SY
 
-
-
+### удаляю чужую запись
+DELETE http://localhost:3003/api/blogs/68b0b56951b11884440af432
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hc2xlbmHRhCIsImlkIjoiNjhjYmE3ZWVhOTEyOTNlMWE2ZjA0Yjk4IiwiaWF0IjoxNzU4MjE2NzMyLCJleHAiOjE3NTgyMjAzMzJ9.QUZbebpxIo5iURfZcanzZddYXT4T2I4KW7PKcSZB_SY
 

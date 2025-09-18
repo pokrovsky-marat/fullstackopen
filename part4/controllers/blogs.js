@@ -34,7 +34,22 @@ blogsRouter.post('/', async (request, response) => {
   await user.save()
 })
 blogsRouter.delete('/:id', async (request, response) => {
+  let blog = await Blog.findById(request.params.id)
+  if (!blog) {
+    return response.status(401).json({ error: 'No such blog note' })
+  }
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'token invalid' })
+  }
+
+  if (blog?.user?.toString() !== decodedToken.id.toString()) {
+    return response
+      .status(403)
+      .json({ error: 'forbidden: not allowed to delete this resource' })
+  }
   await Blog.findByIdAndDelete(request.params.id)
+
   response.status(204).end()
 })
 blogsRouter.put('/:id', async (request, response) => {
