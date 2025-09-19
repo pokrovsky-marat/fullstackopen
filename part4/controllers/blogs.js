@@ -12,8 +12,6 @@ blogsRouter.delete('/:id', userExtractor, async (request, response) => {
     return response.status(401).json({ error: 'No such blog note' })
   }
   const user = request.user
-  console.log('--------------------')
-  console.log(blog?.user?.toString(), user._id.toString())
   if (blog?.user?.toString() !== user._id.toString()) {
     return response
       .status(403)
@@ -30,6 +28,15 @@ blogsRouter.get('/', async (request, response) => {
 })
 //Все обработчики снизу подпадут под влияние мидлвара, перемещая его вврех в низ
 //можно регулировать пути которым не нужна авторизация, как я сделал для get ☝
+
+
+blogsRouter.put('/:id', async (request, response) => {
+  const { likes } = request.body
+  let blog = await Blog.findById(request.params.id)
+  blog.likes = likes
+  const result = await blog.save()
+  response.status(200).json(result)
+})
 blogsRouter.use(userExtractor)
 blogsRouter.post('/', async (request, response) => {
   const user = request.user
@@ -50,13 +57,4 @@ blogsRouter.post('/', async (request, response) => {
   user.blogs = [...user.blogs, result._id]
   await user.save()
 })
-
-blogsRouter.put('/:id', async (request, response) => {
-  const { likes } = request.body
-  let blog = await Blog.findById(request.params.id)
-  blog.likes = likes
-  const result = await blog.save()
-  response.status(200).json(result)
-})
-
 module.exports = blogsRouter

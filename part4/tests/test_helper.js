@@ -1,9 +1,11 @@
+//Для первой записи блога свойство 'user' взято из тестовой базы данных users
 const blogs = [
   {
     title: 'React patterns',
     author: 'Michael Chan',
     url: 'https://reactpatterns.com/',
     likes: 7,
+    user:"68cc611937aeaf45e3c6d05c",
     __v: 0,
   },
   {
