@@ -8,11 +8,15 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
 
   useEffect(() => {
-    let token = JSON.parse(localStorage.getItem('tokenObject'))
-    if (token) {
-      setUser(token)
+    let tokenObject = JSON.parse(localStorage.getItem('tokenObject'))
+    if (tokenObject) {
+      setUser(tokenObject)
+      blogService.setToken(tokenObject.token)
     }
   }, [])
   useEffect(() => {
@@ -27,6 +31,10 @@ const App = () => {
     e.preventDefault()
     try {
       const user = await loginService.login({ username, password })
+      //При успешном логине, мы сохраняем токен в закрытой переменной модуля
+      //blogService token, которая используется для авторизованных запросов
+      blogService.setToken(user.token)
+      //сохраняем в локал сторидже чтобы при обновлении не приходилось заново логиниться
       localStorage.setItem('tokenObject', JSON.stringify(user))
       setUser(user)
     } catch (error) {
@@ -36,6 +44,19 @@ const App = () => {
 
     setUsername('')
     setPassword('')
+  }
+  const handleCreate = async (e) => {
+    e.preventDefault()
+    try {
+      const newBlog = await blogService.create({ title, author, url })
+      setBlogs([...blogs, newBlog])
+      setTitle('')
+      setAuthor('')
+      setUrl('')
+    } catch (error) {
+      alert(error.message)
+      console.log(error)
+    }
   }
   const loginForm = () => (
     <form onSubmit={handleLogin}>
@@ -78,6 +99,47 @@ const App = () => {
       {user.name} logged in<button onClick={handleLogout}>logout</button>
     </p>
   )
+  const createBlog = () => {
+    return (
+      <form onSubmit={handleCreate}>
+        <h2>create new</h2>
+        <div>
+          <label>
+            title
+            <input
+              value={title}
+              onChange={({ target }) => {
+                setTitle(target.value)
+              }}
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            author
+            <input
+              value={author}
+              onChange={({ target }) => {
+                setAuthor(target.value)
+              }}
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            url
+            <input
+              value={url}
+              onChange={({ target }) => {
+                setUrl(target.value)
+              }}
+            />
+          </label>
+        </div>
+        <button type="submit">create</button>
+      </form>
+    )
+  }
   return (
     <div>
       <h2>blogs</h2>
@@ -85,6 +147,7 @@ const App = () => {
       {user && (
         <div>
           {loginInfo()}
+          {createBlog()}
           {blogList()}
         </div>
       )}
