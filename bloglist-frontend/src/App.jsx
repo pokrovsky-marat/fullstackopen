@@ -1,8 +1,12 @@
+import './index.css'
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
+const Notification = ({ message, type }) => {
+  if (message) return <h2 className={type}>{message}</h2>
+}
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
@@ -11,6 +15,9 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const [notificationText, setNotificationText] = useState(null)
+  //info для зеленого, error для красного
+  const [notificationType, setNotificationType] = useState('info')
 
   useEffect(() => {
     let tokenObject = JSON.parse(localStorage.getItem('tokenObject'))
@@ -39,7 +46,11 @@ const App = () => {
       setUser(user)
     } catch (error) {
       console.log(error)
-      alert('wrong credentials')
+      setNotificationType('error')
+      setNotificationText('wrong username or password')
+      setTimeout(() => {
+        setNotificationText(null)
+      }, 2000)
     }
 
     setUsername('')
@@ -53,6 +64,13 @@ const App = () => {
       setTitle('')
       setAuthor('')
       setUrl('')
+      setNotificationType('info')
+      setNotificationText(
+        `a new blog ${newBlog.title} by ${newBlog.author} added`
+      )
+      setTimeout(() => {
+        setNotificationText(null)
+      }, 2000)
     } catch (error) {
       alert(error.message)
       console.log(error)
@@ -142,6 +160,7 @@ const App = () => {
   }
   return (
     <div>
+      <Notification message={notificationText} type={notificationType} />
       <h2>blogs</h2>
       {!user && loginForm()}
       {user && (
