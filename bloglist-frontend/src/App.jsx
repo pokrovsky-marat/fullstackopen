@@ -10,14 +10,27 @@ const App = () => {
   const [user, setUser] = useState(null)
 
   useEffect(() => {
+    let token = JSON.parse(localStorage.getItem('tokenObject'))
+    if (token) {
+      setUser(token)
+    }
+  }, [])
+  useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs))
   }, [])
+
+  const handleLogout = () => {
+    localStorage.removeItem('tokenObject')
+    setUser(null)
+  }
   const handleLogin = async (e) => {
     e.preventDefault()
     try {
       const user = await loginService.login({ username, password })
+      localStorage.setItem('tokenObject', JSON.stringify(user))
       setUser(user)
     } catch (error) {
+      console.log(error)
       alert('wrong credentials')
     }
 
@@ -55,18 +68,23 @@ const App = () => {
   )
   const blogList = () => (
     <div>
-      <h2>blogs</h2>
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
       ))}
     </div>
   )
+  const loginInfo = () => (
+    <p>
+      {user.name} logged in<button onClick={handleLogout}>logout</button>
+    </p>
+  )
   return (
     <div>
+      <h2>blogs</h2>
       {!user && loginForm()}
       {user && (
         <div>
-          <p>{user.name} logged in</p>
+          {loginInfo()}
           {blogList()}
         </div>
       )}
