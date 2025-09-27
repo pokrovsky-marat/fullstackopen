@@ -36,3 +36,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hc
 DELETE http://localhost:3003/api/blogs/68b0b56951b11884440af432
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hc2xlbmHRhCIsImlkIjoiNjhjYmE3ZWVhOTEyOTNlMWE2ZjA0Yjk4IiwiaWF0IjoxNzU4MjIyODUzLCJleHAiOjE3NTgyMjY0NTN9.C-gPTVoo1lGcTWBEdZXCM6sCcGxW-s4jRDpSnrennH4
 
+### Добавляем блог с помощью токен jwt, из него будет браться айди пользователя который добавил запись
+
+PUT http://localhost:3003/api/blogs/68d6ae53a21add4fc40f76b5
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhdmFudCIsImlkIjoiNjhiZTU5MWNlNzhlZTVjOTg0OGRkMjdmIiwiaWF0IjoxNzU4OTkzNDU4LCJleHAiOjE3NTg5OTcwNTh9.AB1Fc33vpIR1fUuuMFSJRStR4SEl_C6i8IkGX86dy1w
+
+{
+"likes":"4"
+}

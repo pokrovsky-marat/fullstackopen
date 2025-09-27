@@ -29,7 +29,7 @@ blogsRouter.get('/', async (request, response) => {
 //Все обработчики снизу подпадут под влияние мидлвара, перемещая его вврех в низ
 //можно регулировать пути которым не нужна авторизация, как я сделал для get ☝
 
-
+blogsRouter.use(userExtractor)
 blogsRouter.put('/:id', async (request, response) => {
   const { likes } = request.body
   let blog = await Blog.findById(request.params.id)
@@ -37,7 +37,7 @@ blogsRouter.put('/:id', async (request, response) => {
   const result = await blog.save()
   response.status(200).json(result)
 })
-blogsRouter.use(userExtractor)
+
 blogsRouter.post('/', async (request, response) => {
   const user = request.user
   if (!user) {

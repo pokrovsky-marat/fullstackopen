@@ -103,10 +103,24 @@ const App = () => {
       <button type="submit">login</button>
     </form>
   )
+  const sendLikeToServer = async (blog) => {
+    try {
+      const updatedBlog = await blogService.update(blog)
+      setBlogs((prevBlogs) =>
+        prevBlogs.map((item) =>
+          item.id === updatedBlog.id
+            ? { ...item, likes: updatedBlog.likes }
+            : item
+        )
+      )
+    } catch (error) {
+      alert(error)
+    }
+  }
   const blogList = () => (
     <div>
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} onLike={sendLikeToServer} />
       ))}
     </div>
   )
