@@ -117,13 +117,16 @@ const App = () => {
       alert(error)
     }
   }
-  const blogList = () => (
-    <div>
-      {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} onLike={sendLikeToServer} />
-      ))}
-    </div>
-  )
+  const blogList = () => {
+    const sortedBlogs = blogs.toSorted((a, b) => b.likes - a.likes)
+    return (
+      <div>
+        {sortedBlogs.map((blog) => (
+          <Blog key={blog.id} blog={blog} onLike={sendLikeToServer} />
+        ))}
+      </div>
+    )
+  }
   const loginInfo = () => (
     <p>
       {user.name} logged in<button onClick={handleLogout}>logout</button>
