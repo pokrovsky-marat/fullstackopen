@@ -55,7 +55,7 @@ const App = () => {
     setUsername('')
     setPassword('')
   }
-  const handleCreate = async (newBlogObject) => {
+  const onCreate = async (newBlogObject) => {
     try {
       createFormRef.current.toggleShowContent()
       const newBlog = await blogService.create(newBlogObject)
@@ -103,7 +103,7 @@ const App = () => {
       <button type="submit">login</button>
     </form>
   )
-  const sendLikeToServer = async (blog) => {
+  const onLike = async (blog) => {
     try {
       const updatedBlog = await blogService.update(blog)
       setBlogs((prevBlogs) =>
@@ -117,12 +117,29 @@ const App = () => {
       alert(error)
     }
   }
+  const onDelete = async (id) => {
+    try {
+      const response = await blogService.remove(id)
+      if (response.status === 204) {
+        setBlogs(blogs.filter((item) => item.id !== id))
+      }
+    } catch (error) {
+      alert('Не удачная операция')
+      console.log(error)
+    }
+  }
   const blogList = () => {
     const sortedBlogs = blogs.toSorted((a, b) => b.likes - a.likes)
     return (
       <div>
         {sortedBlogs.map((blog) => (
-          <Blog key={blog.id} blog={blog} onLike={sendLikeToServer} />
+          <Blog
+            key={blog.id}
+            blog={blog}
+            onLike={onLike}
+            onDelete={onDelete}
+            user={user}
+          />
         ))}
       </div>
     )
@@ -142,7 +159,7 @@ const App = () => {
         <div>
           {loginInfo()}
           <Togglable buttonName="create new blog" ref={createFormRef}>
-            <CreateBlog hanldleOnSubmit={handleCreate} />
+            <CreateBlog onCreate={onCreate} />
           </Togglable>
 
           {blogList()}

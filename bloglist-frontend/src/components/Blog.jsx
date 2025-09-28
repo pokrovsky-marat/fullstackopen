@@ -1,12 +1,17 @@
 import { useState } from 'react'
 
-const Blog = ({ blog, onLike }) => {
+const Blog = ({ blog, onLike, user, onDelete }) => {
   const [showContent, setShowContent] = useState(false)
   const toggleShowContent = () => {
     setShowContent(!showContent)
   }
-  const hanldeLike = () => {
+  const handleLike = () => {
     onLike({ likes: Number(blog.likes) + 1, id: blog.id })
+  }
+  const handleDelete = () => {
+    if (window.confirm(`Remove blog ${blog.title} by  ${blog.author}`)) {
+      onDelete(blog.id)
+    }
   }
   const blogStyle = {
     paddingTop: 10,
@@ -15,24 +20,29 @@ const Blog = ({ blog, onLike }) => {
     borderWidth: 1,
     marginBottom: 5,
   }
-  const showLess = { display: showContent ? 'none' : '' }
-  const showMore = { display: showContent ? '' : 'none' }
+
   return (
     <div style={blogStyle}>
-      <div style={showLess}>
-        {blog.title} {blog.author}{' '}
-        <button onClick={toggleShowContent}>view</button>
-      </div>
-
-      <div style={showMore}>
-        {blog.title} {blog.author}{' '}
-        <button onClick={toggleShowContent}>hide</button>
-        <div>{blog.url}</div>
+      {!showContent && (
         <div>
-          {blog.likes} <button onClick={hanldeLike}>like</button>
+          {blog.title} {blog.author}
+          <button onClick={toggleShowContent}>view</button>
         </div>
-        <div>{blog?.user?.username}</div>
-      </div>
+      )}
+      {showContent && (
+        <div>
+          {blog.title} {blog.author}
+          <button onClick={toggleShowContent}>hide</button>
+          <div>{blog.url}</div>
+          <div>
+            {blog.likes} <button onClick={handleLike}>like</button>
+          </div>
+          <div>{blog?.user?.username}</div>
+          {blog?.user?.username === user.username && (
+            <button onClick={handleDelete}>remove</button>
+          )}
+        </div>
+      )}
     </div>
   )
 }

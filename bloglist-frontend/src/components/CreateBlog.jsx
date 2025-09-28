@@ -1,12 +1,12 @@
 import { useState } from 'react'
 
-const CreateBlog = ({ hanldleOnSubmit }) => {
+const CreateBlog = ({ onCreate }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
   const handleCreate = (e) => {
     e.preventDefault()
-    hanldleOnSubmit({ title, author, url }).then((result) => {
+    onCreate({ title, author, url }).then((result) => {
       if (result) {
         setTitle('')
         setAuthor('')
