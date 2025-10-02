@@ -30,4 +30,19 @@ describe('Blog app', () => {
       await expect(page.getByText('Marat logged in')).not.toBeVisible()
     })
   })
+  describe('When logged in', () => {
+    beforeEach(async ({ page }) => {
+      loginWith(page, 'savant', 'fP8aaasxh6Z_@')
+    })
+
+    test('a new blog can be created', async ({ page }) => {
+      await page.getByRole('button', { name: 'create new blog' }).click()
+      await page.getByLabel('title').fill('test title')
+      await page.getByLabel('author').fill('test author')
+      await page.getByLabel('url').fill('test url')
+      await page.getByRole('button', { name: 'create' }).click()
+      await page.getByText('test title test author').waitFor({ timeout: 5000 })
+      await expect(page.getByText('test title test author')).toBeVisible()
+    })
+  })
 })
