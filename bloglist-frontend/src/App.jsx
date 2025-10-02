@@ -59,7 +59,8 @@ const App = () => {
     try {
       createFormRef.current.toggleShowContent()
       const newBlog = await blogService.create(newBlogObject)
-      setBlogs([...blogs, newBlog])
+      //При Запросе с БД потом данные обновятся, а пока это нужно для оттображения кнопки remove
+      setBlogs([...blogs, { ...newBlog, user: { username: user.username } }])
 
       setNotificationType('info')
       setNotificationText(

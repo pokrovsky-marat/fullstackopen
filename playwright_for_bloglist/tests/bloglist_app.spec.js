@@ -47,5 +47,13 @@ describe('Blog app', () => {
       await page.getByText('1').waitFor({ timeout: 5000 })
       expect(page.getByText('1')).toBeVisible()
     })
+    test('a new blog can be deleted', async ({ page }) => {
+      page.on('dialog', (dialog) => dialog.accept())
+      createBlog(page, 'test title', 'test author', 'test url')
+      await page.getByRole('button', { name: 'view' }).click()
+      await page.getByRole('button', { name: 'remove' }).click()
+
+      await expect(page.getByText('test title test author')).not.toBeVisible()
+    })
   })
 })
