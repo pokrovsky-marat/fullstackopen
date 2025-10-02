@@ -8,14 +8,6 @@ describe('Проверяем работу компонента BlogForm', () => 
   //Если функция должна возвращать промис
   const onCreate = vi.fn().mockResolvedValue(true)
   beforeEach(() => {
-    const blog = {
-      title: 'React patterns',
-      author: 'Michael Chan',
-      url: 'https://reactpatterns.com/',
-      likes: 7,
-      username: 'savant',
-    }
-
     render(<CreateBlog onCreate={onCreate} />)
   })
 
