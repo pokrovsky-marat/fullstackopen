@@ -29,12 +29,23 @@ const reducer = (state = initialState, action) => {
         : anecdote
     )
   }
+  if (action.type === 'CREATE') {
+    return state.concat(action.payload)
+  }
   return state
 }
 export const vote_ac = (id) => ({
   type: 'VOTE',
   payload: {
     id,
+  },
+})
+export const create_ac = (content) => ({
+  type: 'CREATE',
+  payload: {
+    content,
+    id: getId(),
+    votes: 0,
   },
 })
 export default reducer
