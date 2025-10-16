@@ -14,14 +14,16 @@ const Anecdote = ({ anecdote, vote }) => {
 }
 const AnecdoteList = () => {
   const dispatch = useDispatch()
-  const anecdotes = useSelector((state) => state)
+  const anecdotes = useSelector((state) => state.anecdotes)
 
   const vote = (id) => {
     console.log('vote', id)
     dispatch(vote_ac(id))
   }
-
+  console.log(anecdotes)
+  console.log('-------------------')
   const sortedAnecdotes = anecdotes.toSorted((a, b) => b.votes - a.votes)
+
   return (
     <div>
       {sortedAnecdotes.map((anecdote) => (
