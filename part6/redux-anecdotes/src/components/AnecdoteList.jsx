@@ -20,8 +20,7 @@ const AnecdoteList = () => {
     console.log('vote', id)
     dispatch(vote_ac(id))
   }
-  console.log(anecdotes)
-  console.log('-------------------')
+
   const sortedAnecdotes = anecdotes.toSorted((a, b) => b.votes - a.votes)
 
   return (
