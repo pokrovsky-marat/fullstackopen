@@ -6,4 +6,18 @@ const getAll = async () => {
   }
   return response.json()
 }
-export default { getAll }
+const create = async (content) => {
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ content, votes: 0 }),
+  }
+  const response = await fetch(baseUrl, options)
+  if (!response.ok) {
+    throw new Error('Ошибка сохранения записи в БД')
+  }
+  return response.json()
+}
+export default { getAll, create }
