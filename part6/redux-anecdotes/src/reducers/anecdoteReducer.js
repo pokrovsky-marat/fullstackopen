@@ -1,15 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit'
 import dbService from '../services/anecdotes'
+import { notification_ac } from './notificationReducer'
 
 const anecdoteSlice = createSlice({
   name: 'anecdote',
   initialState: [],
   reducers: {
     vote_ac(state, action) {
-      return state.map((anecdote) =>
-        anecdote.id === action.payload
-          ? { ...anecdote, votes: anecdote.votes + 1 }
-          : anecdote
+      return state.map((el) =>
+        el.id == action.payload.id ? action.payload : el
       )
     },
     create_ac(state, action) {
@@ -20,7 +19,7 @@ const anecdoteSlice = createSlice({
     },
   },
 })
-const { getall_ac, create_ac } = anecdoteSlice.actions
+const { getall_ac, create_ac, vote_ac } = anecdoteSlice.actions
 
 export const setAnecdotes = () => {
   return async (dispatch) => {
@@ -34,6 +33,22 @@ export const appendAnecdote = (content) => {
     dispatch(create_ac(newAnecdote))
   }
 }
+export const appendVote = (id) => {
+  return async (dispatch, getState) => {
+    const state = getState().anecdotes
 
-export const { vote_ac } = anecdoteSlice.actions
+    const anecdote = state.find((el) => el.id === id)
+    const response = await dbService.vote({
+      ...anecdote,
+      votes: anecdote.votes + 1,
+    })
+    dispatch(vote_ac(response))
+    //Оттобразить сообщение на 5 секунд
+    dispatch(notification_ac(`You voted '${response.content}'`))
+    setTimeout(() => {
+      dispatch(notification_ac(''))
+    }, 5000)
+  }
+}
+
 export default anecdoteSlice.reducer

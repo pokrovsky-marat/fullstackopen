@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { vote_ac } from '../reducers/anecdoteReducer'
-import { notification_ac } from '../reducers/notificationReducer'
+import { appendVote } from '../reducers/anecdoteReducer'
+
 
 const Anecdote = ({ anecdote, vote }) => {
   return (
@@ -22,13 +22,8 @@ const AnecdoteList = () => {
     return state.anecdotes.filter((item) => item.content.includes(filter))
   })
 
-  const vote = (id, content) => {
-    dispatch(vote_ac(id))
-    //Оттобразить сообщение на 5 секунд
-    dispatch(notification_ac(`You voted '${content}'`))
-    setTimeout(() => {
-      dispatch(notification_ac(''))
-    }, 5000)
+  const vote = (id) => {
+    dispatch(appendVote(id))
   }
 
   const sortedAnecdotes = anecdotes.toSorted((a, b) => b.votes - a.votes)

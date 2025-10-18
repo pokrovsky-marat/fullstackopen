@@ -20,4 +20,18 @@ const create = async (content) => {
   }
   return response.json()
 }
-export default { getAll, create }
+const vote = async (anecdote) => {
+  const options = {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(anecdote),
+  }
+  const response = await fetch(`${baseUrl}/${anecdote.id}`, options)
+  if (!response.ok) {
+    throw new Error('Ошибка сохранения записи в БД')
+  }
+  return response.json()
+}
+export default { getAll, create, vote }
