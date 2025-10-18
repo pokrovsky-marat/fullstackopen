@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import dbService from '../services/anecdotes'
-import { notification_ac } from './notificationReducer'
+import { setNotification } from './notificationReducer'
 
 const anecdoteSlice = createSlice({
   name: 'anecdote',
@@ -44,10 +44,7 @@ export const appendVote = (id) => {
     })
     dispatch(vote_ac(response))
     //Оттобразить сообщение на 5 секунд
-    dispatch(notification_ac(`You voted '${response.content}'`))
-    setTimeout(() => {
-      dispatch(notification_ac(''))
-    }, 5000)
+    dispatch(setNotification(`You voted '${response.content}'`, 5))
   }
 }
 
