@@ -1,7 +1,7 @@
 /demo*
 /backend
 /frontend
-*/node_modules
+**/node_modules
 */.env
 .vscode/
 playwright_for_noteapp/
