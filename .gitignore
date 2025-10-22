@@ -1,7 +1,11 @@
 /demo*
 /backend
 /frontend
-**/node_modules
+# Игнорировать все node_modules на любом уровне
+**/node_modules/
+
+# Игнорировать все .vite папки на любом уровне
+**/.vite/
 */.env
 .vscode/
 playwright_for_noteapp/
