@@ -8,5 +8,6 @@
 **/.vite/
 */.env
 .vscode/
+.vite/
 playwright_for_noteapp/
 part6_theory/
