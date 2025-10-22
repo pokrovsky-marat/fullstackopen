@@ -7,8 +7,25 @@ const AnecdoteForm = () => {
   const queryClient = useQueryClient()
   const newAnecdoteMutation = useMutation({
     mutationFn: createAnecdote,
-    onSuccess: () => {
+    onSuccess: (data, varables) => {
       queryClient.invalidateQueries({ queryKey: ['anecdotes'] })
+
+      notificationDispatch({
+        type: 'SET',
+        payload: `anecdote '${varables.content}' created`,
+      })
+      setTimeout(() => {
+        notificationDispatch({ type: 'SET', payload: null })
+      }, 4000)
+    },
+    onError: (error) => {
+      notificationDispatch({
+        type: 'SET',
+        payload: `${error.message} `,
+      })
+      setTimeout(() => {
+        notificationDispatch({ type: 'SET', payload: null })
+      }, 4000)
     },
   })
   const onCreate = (event) => {
@@ -16,11 +33,6 @@ const AnecdoteForm = () => {
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
     newAnecdoteMutation.mutate({ content, votes: 0 })
-    notificationDispatch({ type: 'SET', payload: `anecdote '${content}' created` })
-    setTimeout(() => {
-      notificationDispatch({ type: 'SET', payload: null })
-    }, 4000);
-    
   }
 
   return (

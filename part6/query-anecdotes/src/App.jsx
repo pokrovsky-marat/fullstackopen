@@ -20,9 +20,8 @@ const App = () => {
     //1  Повторить запрос еще раз или false если новый запрос не нужен
     retry: false,
   })
-  console.log(result)
+
   const handleVote = (anecdote) => {
-    console.log('vote')
     anecdoteMutationVote.mutate(anecdote)
     notificationDispatch({
       type: 'SET',
@@ -34,7 +33,6 @@ const App = () => {
   }
 
   const anecdotes = result.data
-  console.log(anecdotes)
   if (result.isLoading) {
     return <div>loading data...</div>
   }
